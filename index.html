@@ -7,130 +7,79 @@
 
 <style>
 :root{
-  --bg0:#070b16;
-  --bg1:#0b1220;
-  --text:#eaf0ff;
+  --bg:#0b1220;
+  --panel:#0f162d;
+  --card:#151c36;
+  --chip:#1b2344;
+  --text:#e8eefc;
   --muted:#a8b3cf;
   --accent:#7c5cff;
-  --accent2:#22c55e;
-  --line:rgba(255,255,255,.10);
-  --shadow: 0 14px 38px rgba(0,0,0,.42);
-  --shadow2: 0 10px 24px rgba(0,0,0,.30);
-  --radius:16px;
-  --radius2:14px;
+  --green:#22c55e;
+  --line:#2a335f;
 }
 
 *{box-sizing:border-box}
-html,body{height:100%}
 body{
   margin:0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
   color:var(--text);
-  background:
-    radial-gradient(900px 650px at 14% 8%, rgba(124,92,255,.28), rgba(0,0,0,0) 60%),
-    radial-gradient(900px 650px at 90% 18%, rgba(34,197,94,.16), rgba(0,0,0,0) 62%),
-    radial-gradient(720px 500px at 60% 110%, rgba(251,113,133,.12), rgba(0,0,0,0) 60%),
-    linear-gradient(180deg, var(--bg0), var(--bg1) 55%);
 }
-
 .container{
-  max-width:1120px;
+  max-width:1100px;
   margin:0 auto;
-  padding:22px 16px 96px;
+  padding:16px 14px 90px;
 }
 
 header{
   display:flex;
   flex-wrap:wrap;
   justify-content:space-between;
-  align-items:flex-start;
   gap:12px;
   margin-bottom:14px;
 }
-.hgroup{min-width:260px}
-h1{
-  margin:0;
-  font-size:22px;
-  letter-spacing:.2px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.badge{
-  font-size:12px;
-  color: rgba(232,240,255,.92);
-  border:1px solid rgba(255,255,255,.16);
-  background: rgba(255,255,255,.05);
-  padding:6px 10px;
-  border-radius:999px;
-}
-.subtitle{
-  margin-top:8px;
-  font-size:13px;
-  color:var(--muted);
-  line-height:1.4;
-}
+h1{ margin:0; font-size:20px; }
+.subtitle{ font-size:13px; color:var(--muted); line-height:1.35; margin-top:6px; }
 
 .controls{
   display:flex;
-  gap:10px;
+  gap:8px;
   flex-wrap:wrap;
   align-items:center;
-  justify-content:flex-end;
 }
 button{
-  -webkit-appearance:none;
-  appearance:none;
-  border:1px solid rgba(255,255,255,.14);
-  color:var(--text);
-  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
-  padding:10px 14px;
-  border-radius: 999px;
+  background:var(--chip);
+  border:1px solid var(--line);
+  color:#fff;
+  padding:9px 12px;
+  border-radius:10px;
   cursor:pointer;
   white-space:nowrap;
-  box-shadow: var(--shadow2);
 }
-button:active{ transform: translateY(1px); }
-button:focus{ outline:2px solid rgba(124,92,255,.45); outline-offset:2px; }
-
 .pill{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
+  display:inline-block;
   font-size:12px;
   color:var(--muted);
-  border:1px solid rgba(255,255,255,.14);
-  padding:9px 12px;
+  border:1px solid var(--line);
+  padding:7px 10px;
   border-radius:999px;
   background: rgba(255,255,255,.04);
 }
-.pill .dot{ width:9px;height:9px;border-radius:99px; background: rgba(255,255,255,.25); }
-.pill .dot.g{ background: rgba(34,197,94,.75); }
-.pill .dot.p{ background: rgba(124,92,255,.75); }
 
 .layout{
   display:grid;
-  grid-template-columns: 1.28fr 1fr;
+  grid-template-columns: 1.25fr 1fr;
   gap:14px;
 }
-@media (max-width: 920px){
+@media (max-width:900px){
   .layout{ grid-template-columns:1fr; }
 }
 
-.panel, .sideCard{
-  border-radius: var(--radius);
-  border: 1px solid rgba(255,255,255,.10);
-  box-shadow: var(--shadow);
-  overflow:hidden;
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-}
-@supports ((-webkit-backdrop-filter: blur(8px)) or (backdrop-filter: blur(8px))){
-  .panel, .sideCard{ -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-}
-
-.panelInner{
-  background: linear-gradient(180deg, rgba(12,21,43,.70), rgba(15,26,51,.55));
-  padding:14px;
+.panel{
+  background:var(--panel);
+  border-radius:14px;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.06);
 }
 
 .monthbar{
@@ -141,129 +90,84 @@ button:focus{ outline:2px solid rgba(124,92,255,.45); outline-offset:2px; }
   flex-wrap:wrap;
   margin-bottom:10px;
 }
-.monthTitle{ font-weight:800; font-size:16px; letter-spacing:.25px; }
+.monthTitle{ font-weight:bold; font-size:15px; }
 
-.weekdays, .days{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
-.weekdays div{ text-align:center; font-size:12px; color: rgba(168,179,207,.92); padding:4px 0; letter-spacing:.2px; }
+.weekdays, .days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+.weekdays div{
+  text-align:center;
+  font-size:12px;
+  color:#aab2ff;
+  padding:4px 0;
+}
 
 .day{
-  background: rgba(16,27,56,.72);
-  border-radius: 14px;
-  padding:10px;
-  min-height:66px;
+  background:var(--card);
+  border-radius:10px;
+  padding:8px;
+  min-height:60px;
   cursor:pointer;
-  border:1px solid rgba(255,255,255,.08);
-  position:relative;
-  transition: transform .12s ease, border-color .12s ease;
+  border:1px solid rgba(255,255,255,.06);
 }
-.day:hover{ border-color: rgba(255,255,255,.18); transform: translateY(-1px); }
-.day:active{ transform: translateY(0px); }
-
-.day.today{ border:2px solid rgba(124,92,255,.70); }
-.day.bday{
-  border:2px solid rgba(34,197,94,.70);
-  background: linear-gradient(180deg, rgba(34,197,94,.10), rgba(16,27,56,.72));
-}
-.day.bday:before{
-  content:"";
-  position:absolute;
-  inset:-22px -26px auto auto;
-  width:64px;height:64px;
-  background: radial-gradient(circle at 30% 30%, rgba(34,197,94,.55), rgba(34,197,94,0) 62%);
-  transform: rotate(18deg);
-  pointer-events:none;
-}
+.day.today{ border:2px solid var(--accent); }
+.day.bday{ border:2px solid var(--green); }
 .day.muted{ opacity:.35; cursor:default; }
-.day .n{ font-size:14px; font-weight:800; display:flex; align-items:center; gap:6px; }
-.day .n .miniBadge{
-  font-size:11px;
-  padding:3px 7px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.05);
-  color: rgba(232,240,255,.92);
-}
+.day .n{ font-size:13px; font-weight:bold; }
 .day .p{
-  margin-top:8px;
+  margin-top:6px;
   font-size:11px;
-  color: rgba(168,179,207,.92);
+  color:var(--muted);
   overflow:hidden;
   white-space:nowrap;
   text-overflow:ellipsis;
 }
 
-.sideInner{
-  padding:14px;
-  background: linear-gradient(180deg, rgba(12,21,43,.65), rgba(15,26,51,.55));
+.sideCard{
+  background:var(--panel);
+  border-radius:14px;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.06);
 }
 .cardInner{
-  background: rgba(16,27,56,.60);
-  border:1px solid rgba(255,255,255,.10);
-  border-radius: var(--radius2);
-  padding:14px;
+  background:var(--card);
+  border-radius:12px;
+  padding:12px;
 }
-#selectedTitle{ font-size:18px; font-weight:900; letter-spacing:.2px; }
-#selectedHint{ margin-top:8px; }
-.list{ list-style:none; padding:0; margin:12px 0 0; }
-
+.list{ list-style:none; padding:0; margin:10px 0 0; }
 .item{
-  background: linear-gradient(180deg, rgba(18,31,66,.90), rgba(18,31,66,.70));
-  border-radius: 14px;
-  padding:12px 12px;
-  margin-bottom:10px;
-  border:1px solid rgba(255,255,255,.10);
-  box-shadow: 0 8px 18px rgba(0,0,0,.22);
+  background:var(--chip);
+  border-radius:10px;
+  padding:10px;
+  margin-bottom:8px;
+  border:1px solid rgba(255,255,255,.06);
 }
 .itemTop{
   display:flex;
   justify-content:space-between;
   gap:10px;
   flex-wrap:wrap;
-  align-items:flex-start;
 }
-.itemTop strong{ font-size:15px; }
-.itemTop .dateTag{
-  font-size:12px;
-  color: rgba(168,179,207,.95);
-  border:1px solid rgba(255,255,255,.12);
-  padding:6px 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.04);
-}
-
 .msg{
-  font-size:12.5px;
-  margin-top:10px;
-  color: rgba(193,255,219,.92);
-  line-height:1.35;
-  border: 1px solid rgba(34,197,94,.20);
-  background: linear-gradient(90deg, rgba(34,197,94,.10), rgba(124,92,255,.10));
-  border-radius: 12px;
-  padding:10px 12px;
+  font-size:12px;
+  margin-top:7px;
+  color:#aef5c8;
+  line-height:1.3;
 }
 
 .floatToday{
   position:fixed;
   right:14px;
   bottom:14px;
-  z-index:50;
-}
-.floatToday button{
-  border:1px solid rgba(124,92,255,.35);
-  background: linear-gradient(180deg, rgba(124,92,255,.22), rgba(124,92,255,.12));
 }
 
-@media (max-width: 600px){
-  .container{ padding:18px 12px 92px; }
+@media (max-width:600px){
   h1{ font-size:18px; }
-  .controls{ justify-content:flex-start; }
-  .day{ min-height:54px; padding:9px; border-radius:12px; }
+  .day{ min-height:50px; }
   .day .p{ display:none; }
-  #selectedTitle{ font-size:17px; }
-}
-
-@media (prefers-reduced-motion: reduce){
-  .day, button{ transition:none !important; }
+  button{ padding:10px 12px; }
 }
 </style>
 </head>
@@ -271,40 +175,35 @@ button:focus{ outline:2px solid rgba(124,92,255,.45); outline-offset:2px; }
 <body>
 <div class="container">
   <header>
-    <div class="hgroup">
-      <h1>🎉 Aniversário — Líderes e Supervisores de Mesa <span class="badge">Calendário</span></h1>
+    <div>
+      <h1>🎉 Aniversário — Líderes e Supervisores de Mesa</h1>
       <div class="subtitle">Clique em um dia para ver os aniversariantes. Dias com aniversário ficam em verde.</div>
     </div>
-
     <div class="controls">
       <button type="button" onclick="prevMonth()">◀ Anterior</button>
       <button type="button" onclick="nextMonth()">Próximo ▶</button>
-      <span class="pill" id="countPill"><span class="dot"></span> —</span>
+      <span class="pill" id="countPill">—</span>
     </div>
   </header>
 
   <div class="layout">
     <div class="panel">
-      <div class="panelInner">
-        <div class="monthbar">
-          <div class="monthTitle" id="monthTitle">—</div>
-          <span class="pill" id="legend"><span class="dot g"></span> Aniversário <span style="opacity:.55">·</span> <span class="dot p"></span> Hoje</span>
-        </div>
-
-        <div class="weekdays">
-          <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
-        </div>
-        <div class="days" id="days"></div>
+      <div class="monthbar">
+        <div class="monthTitle" id="monthTitle">—</div>
+        <span class="pill" id="legend">🟩 Aniversário · 🟣 Hoje</span>
       </div>
+
+      <div class="weekdays">
+        <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+      </div>
+      <div class="days" id="days"></div>
     </div>
 
     <div class="sideCard">
-      <div class="sideInner">
-        <div class="cardInner">
-          <div id="selectedTitle">Selecione um dia</div>
-          <div class="subtitle" id="selectedHint">Ao clicar em um dia do calendário, os aniversários aparecem aqui.</div>
-          <ul class="list" id="list"></ul>
-        </div>
+      <div class="cardInner">
+        <strong id="selectedTitle">Selecione um dia</strong>
+        <div class="subtitle" id="selectedHint" style="margin-top:6px">Ao clicar em um dia do calendário, os aniversários aparecem aqui.</div>
+        <ul class="list" id="list"></ul>
       </div>
     </div>
   </div>
@@ -678,12 +577,12 @@ button:focus{ outline:2px solid rgba(124,92,255,.45); outline-offset:2px; }
 
   function pad2(n){ return String(n).padStart(2,"0"); }
 
-  function countInMonth(m){
+  function countInMonth(m){ // 0-11
     var mm = pad2(m+1);
     var daysCount = 0;
     var peopleCount = 0;
-    for (var k in birthdays){
-      if (birthdays.hasOwnProperty(k) && k.indexOf(mm + "-") === 0){
+    for (var k in birthdays){ 
+      if (birthdays.hasOwnProperty(k) && k.indexOf(mm + "-") === 0){ 
         daysCount++;
         peopleCount += birthdays[k].length;
       }
@@ -691,7 +590,7 @@ button:focus{ outline:2px solid rgba(124,92,255,.45); outline-offset:2px; }
     return {daysCount: daysCount, peopleCount: peopleCount};
   }
 
-  function render(){
+  function render(){ 
     document.getElementById("monthTitle").innerText = months[month] + " " + year;
 
     var c = countInMonth(month);
@@ -707,13 +606,13 @@ button:focus{ outline:2px solid rgba(124,92,255,.45); outline-offset:2px; }
     var first = new Date(year, month, 1).getDay();
     var total = new Date(year, month + 1, 0).getDate();
 
-    for (var i=0; i<first; i++){
+    for (var i=0; i<first; i++){ 
       var empty = document.createElement("div");
       empty.className = "day muted";
       grid.appendChild(empty);
     }
 
-    for (var d=1; d<=total; d++){
+    for (var d=1; d<=total; d++){ 
       var key = pad2(month+1) + "-" + pad2(d);
       var has = birthdays[key] ? true : false;
 
@@ -721,19 +620,19 @@ button:focus{ outline:2px solid rgba(124,92,255,.45); outline-offset:2px; }
       var cls = "day";
       if (has) cls += " bday";
       if (d === now.getDate() && month === now.getMonth() && year === now.getFullYear()) cls += " today";
+
       div.className = cls;
 
       var preview = "";
-      if (has){
+      if (has){ 
         var arr = birthdays[key];
         preview = arr.slice(0,2).join(", ");
         if (arr.length > 2) preview += "…";
       }
 
-      var badge = has ? " <span class='miniBadge'>🎉</span>" : "";
-      div.innerHTML = "<div class='n'>" + d + badge + "</div>" + (has ? "<div class='p'>" + preview + "</div>" : "");
+      div.innerHTML = "<div class='n'>" + d + (has ? " 🎉" : "") + "</div>" + (has ? "<div class='p'>" + preview + "</div>" : "");
 
-      (function(keyCopy, dayCopy){
+      (function(keyCopy, dayCopy){ 
         div.onclick = function(){ showDay(keyCopy, dayCopy); };
       })(key, d);
 
@@ -741,13 +640,13 @@ button:focus{ outline:2px solid rgba(124,92,255,.45); outline-offset:2px; }
     }
   }
 
-  function showDay(key, day){
+  function showDay(key, day){ 
     var list = document.getElementById("list");
     list.innerHTML = "";
     document.getElementById("selectedHint").style.display = "none";
     document.getElementById("selectedTitle").innerText = day + " de " + months[month];
 
-    if (!birthdays[key]){
+    if (!birthdays[key]){ 
       var li = document.createElement("li");
       li.className = "item";
       li.innerHTML = "Sem aniversariantes neste dia.";
@@ -760,15 +659,14 @@ button:focus{ outline:2px solid rgba(124,92,255,.45); outline-offset:2px; }
     var dd = parts[1];
 
     var people = birthdays[key];
-    for (var i=0; i<people.length; i++){
+    for (var i=0; i<people.length; i++){ 
       var name = people[i];
       var msg = messages[name] ? messages[name] : defaultMsg;
 
       var li2 = document.createElement("li");
       li2.className = "item";
-      li2.innerHTML =
-        "<div class='itemTop'><strong>" + name + "</strong><span class='dateTag'>" + dd + "/" + mm + "</span></div>" +
-        "<div class='msg'>" + msg + "</div>";
+      li2.innerHTML = "<div class='itemTop'><strong>" + name + "</strong><span style='color:#a8b3cf;font-size:12px'>" + dd + "/" + mm + "</span></div>" +
+                      "<div class='msg'>" + msg + "</div>";
       list.appendChild(li2);
     }
   }
