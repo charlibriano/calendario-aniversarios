@@ -4,212 +4,291 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calendário de Aniversários - Líderes e Supervisores de Mesa</title>
-<meta name="theme-color" content="#0b1220">
+
 <style>
 :root{
-  --bg0:#060914;
+  --bg0:#070b16;
   --bg1:#0b1220;
   --text:#eaf0ff;
   --muted:#a8b3cf;
   --accent:#7c5cff;
   --accent2:#22c55e;
   --line:rgba(255,255,255,.10);
-  --shadow: 0 18px 44px rgba(0,0,0,.45);
-  --shadow2: 0 10px 26px rgba(0,0,0,.30);
-  --r:18px;
-  --r2:14px;
+  --shadow: 0 14px 38px rgba(0,0,0,.42);
+  --shadow2: 0 10px 24px rgba(0,0,0,.30);
+  --radius:16px;
+  --radius2:14px;
 }
+
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,Helvetica,sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, Helvetica, sans-serif;
   color:var(--text);
   background:
-    radial-gradient(1000px 720px at 12% 8%, rgba(124,92,255,.26), rgba(0,0,0,0) 60%),
-    radial-gradient(980px 700px at 92% 18%, rgba(34,197,94,.15), rgba(0,0,0,0) 62%),
-    radial-gradient(720px 520px at 60% 110%, rgba(251,113,133,.10), rgba(0,0,0,0) 60%),
-    linear-gradient(180deg, var(--bg0), var(--bg1) 62%);
+    radial-gradient(900px 650px at 14% 8%, rgba(124,92,255,.28), rgba(0,0,0,0) 60%),
+    radial-gradient(900px 650px at 90% 18%, rgba(34,197,94,.16), rgba(0,0,0,0) 62%),
+    radial-gradient(720px 500px at 60% 110%, rgba(251,113,133,.12), rgba(0,0,0,0) 60%),
+    linear-gradient(180deg, var(--bg0), var(--bg1) 55%);
 }
-.bgfx{
-  position:fixed; inset:0; pointer-events:none; opacity:.55;
-  background-image:
-    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.55) 50%, transparent 51%),
-    radial-gradient(1px 1px at 70% 22%, rgba(255,255,255,.35) 50%, transparent 51%),
-    radial-gradient(1px 1px at 88% 56%, rgba(255,255,255,.28) 50%, transparent 51%),
-    radial-gradient(1px 1px at 30% 72%, rgba(255,255,255,.28) 50%, transparent 51%),
-    radial-gradient(1px 1px at 55% 84%, rgba(255,255,255,.22) 50%, transparent 51%);
-  filter: blur(.2px);
-}
-.container{max-width:1140px; margin:0 auto; padding:22px 16px 110px;}
 
-.hero{
-  border:1px solid rgba(255,255,255,.10);
-  border-radius: calc(var(--r) + 6px);
-  box-shadow: var(--shadow);
-  overflow:hidden;
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+.container{
+  max-width:1120px;
+  margin:0 auto;
+  padding:22px 16px 96px;
 }
-@supports ((-webkit-backdrop-filter: blur(8px)) or (backdrop-filter: blur(8px))){
-  .hero{ -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+
+header{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:14px;
 }
-.heroInner{padding:16px 16px 14px; background: linear-gradient(180deg, rgba(12,21,43,.62), rgba(15,26,51,.45));}
-.topRow{display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start; justify-content:space-between;}
-h1{margin:0; font-size:22px; letter-spacing:.2px; display:flex; align-items:center; gap:10px;}
-.badge{font-size:12px; border-radius:999px; padding:6px 10px; border:1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.05); color: rgba(232,240,255,.95);}
-.sub{margin-top:8px; color:var(--muted); font-size:13px; line-height:1.45;}
-.controls{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end;}
-.btn{
-  -webkit-appearance:none; appearance:none;
+.hgroup{min-width:260px}
+h1{
+  margin:0;
+  font-size:22px;
+  letter-spacing:.2px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.badge{
+  font-size:12px;
+  color: rgba(232,240,255,.92);
+  border:1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.05);
+  padding:6px 10px;
+  border-radius:999px;
+}
+.subtitle{
+  margin-top:8px;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.4;
+}
+
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:flex-end;
+}
+button{
+  -webkit-appearance:none;
+  appearance:none;
   border:1px solid rgba(255,255,255,.14);
   color:var(--text);
-  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
   padding:10px 14px;
-  border-radius:999px;
+  border-radius: 999px;
   cursor:pointer;
   white-space:nowrap;
   box-shadow: var(--shadow2);
-  transition: transform .12s ease, border-color .12s ease;
 }
-.btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22);}
-.btn:active{transform: translateY(0px);}
-.btn:focus{outline:2px solid rgba(124,92,255,.50); outline-offset:2px;}
-.btn.primary{border-color: rgba(124,92,255,.35); background: linear-gradient(180deg, rgba(124,92,255,.22), rgba(124,92,255,.10));}
+button:active{ transform: translateY(1px); }
+button:focus{ outline:2px solid rgba(124,92,255,.45); outline-offset:2px; }
 
-.pill{display:inline-flex; align-items:center; gap:8px; font-size:12px; color:var(--muted); border:1px solid rgba(255,255,255,.14); padding:9px 12px; border-radius:999px; background: rgba(255,255,255,.04);}
-.dot{width:9px;height:9px;border-radius:99px;background:rgba(255,255,255,.25);}
-.dot.g{background: rgba(34,197,94,.78);}
-.dot.p{background: rgba(124,92,255,.78);}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  color:var(--muted);
+  border:1px solid rgba(255,255,255,.14);
+  padding:9px 12px;
+  border-radius:999px;
+  background: rgba(255,255,255,.04);
+}
+.pill .dot{ width:9px;height:9px;border-radius:99px; background: rgba(255,255,255,.25); }
+.pill .dot.g{ background: rgba(34,197,94,.75); }
+.pill .dot.p{ background: rgba(124,92,255,.75); }
 
-.stats{margin-top:12px; display:grid; grid-template-columns: 1.1fr 1fr 1fr; gap:10px;}
-@media (max-width: 980px){ .stats{ grid-template-columns:1fr; } }
-.stat{border:1px solid rgba(255,255,255,.10); background: rgba(16,27,56,.55); border-radius: var(--r2); padding:12px; display:flex; align-items:flex-start; justify-content:space-between; gap:12px;}
-.stat .k{font-size:12px; color:var(--muted);}
-.stat .v{font-weight:900; font-size:15px; letter-spacing:.2px; margin-top:4px;}
-.stat .hint{font-size:12px; color: rgba(168,179,207,.92); margin-top:8px; line-height:1.35;}
+.layout{
+  display:grid;
+  grid-template-columns: 1.28fr 1fr;
+  gap:14px;
+}
+@media (max-width: 920px){
+  .layout{ grid-template-columns:1fr; }
+}
 
-.searchWrap{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end;}
-.search{flex: 1 1 260px; display:flex; align-items:center; gap:10px; border:1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.04); border-radius: 999px; padding: 10px 12px;}
-.search input{width:100%; border:0; outline:none; background: transparent; color: var(--text); font-size: 13px;}
-
-.layout{margin-top:14px; display:grid; grid-template-columns:1.22fr 1fr; gap:14px;}
-@media (max-width: 920px){ .layout{ grid-template-columns:1fr; } }
-
-.panel, .sideCard{border-radius: var(--r); border:1px solid rgba(255,255,255,.10); box-shadow: var(--shadow); overflow:hidden; background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));}
+.panel, .sideCard{
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: var(--shadow);
+  overflow:hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+}
 @supports ((-webkit-backdrop-filter: blur(8px)) or (backdrop-filter: blur(8px))){
   .panel, .sideCard{ -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 }
-.panelInner{padding:14px; background: linear-gradient(180deg, rgba(12,21,43,.62), rgba(15,26,51,.45));}
-.monthbar{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
-.monthTitle{font-weight:900; font-size:16px; letter-spacing:.25px;}
-.weekdays, .days{display:grid; grid-template-columns:repeat(7,1fr); gap:8px;}
-.weekdays div{text-align:center; font-size:12px; color: rgba(168,179,207,.92); padding:4px 0;}
-.day{background: rgba(16,27,56,.70); border-radius: 14px; padding:10px; min-height:66px; cursor:pointer; border:1px solid rgba(255,255,255,.08); position:relative; transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;}
-.day:hover{ border-color: rgba(255,255,255,.20); transform: translateY(-1px); }
-.day.selected{ box-shadow: 0 0 0 2px rgba(124,92,255,.28) inset; border-color: rgba(124,92,255,.45);}
-.day.today{ border:2px solid rgba(124,92,255,.75); }
-.day.bday{ border:2px solid rgba(34,197,94,.72); background: linear-gradient(180deg, rgba(34,197,94,.11), rgba(16,27,56,.70)); }
-.day.bday:before{ content:""; position:absolute; inset:-22px -26px auto auto; width:64px;height:64px; background: radial-gradient(circle at 30% 30%, rgba(34,197,94,.55), rgba(34,197,94,0) 62%); transform: rotate(18deg); pointer-events:none;}
-.day.muted{ opacity:.35; cursor:default; }
-.day .n{ font-size:14px; font-weight:900; display:flex; align-items:center; gap:6px; }
-.miniBadge{ font-size:11px; padding:3px 7px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.05); color: rgba(232,240,255,.92);}
-.day .p{ margin-top:8px; font-size:11px; color: rgba(168,179,207,.92); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 
-.sideInner{padding:14px; background: linear-gradient(180deg, rgba(12,21,43,.58), rgba(15,26,51,.45));}
-.cardInner{background: rgba(16,27,56,.58); border:1px solid rgba(255,255,255,.10); border-radius: var(--r2); padding:14px;}
-#selectedTitle{font-size:18px; font-weight:950; letter-spacing:.2px;}
-#selectedHint{margin-top:8px; color: var(--muted); font-size:13px; line-height:1.4;}
-.list{list-style:none; padding:0; margin:12px 0 0;}
-.item{background: linear-gradient(180deg, rgba(18,31,66,.92), rgba(18,31,66,.72)); border-radius: 14px; padding:12px; margin-bottom:10px; border:1px solid rgba(255,255,255,.10); box-shadow: 0 8px 18px rgba(0,0,0,.22);}
-.itemTop{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:flex-start;}
-.itemTop strong{font-size:15px;}
-.dateTag{font-size:12px; color: rgba(168,179,207,.95); border:1px solid rgba(255,255,255,.12); padding:6px 10px; border-radius:999px; background: rgba(255,255,255,.04);}
-.msg{font-size:12.5px; margin-top:10px; color: rgba(193,255,219,.92); line-height:1.35; border:1px solid rgba(34,197,94,.22); background: linear-gradient(90deg, rgba(34,197,94,.10), rgba(124,92,255,.12)); border-radius: 12px; padding:10px 12px;}
-.actions{margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;}
-.smallBtn{border:1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.04); color: rgba(232,240,255,.92); padding:8px 10px; border-radius: 999px; cursor:pointer; font-size:12px;}
-.smallBtn:hover{border-color: rgba(255,255,255,.22);}
-.toast{position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: rgba(16,27,56,.92); border:1px solid rgba(255,255,255,.14); color: rgba(232,240,255,.96); padding:10px 12px; border-radius: 999px; box-shadow: var(--shadow2); opacity:0; pointer-events:none; transition: opacity .16s ease, transform .16s ease; z-index: 9999; font-size: 13px;}
-.toast.show{ opacity:1; transform: translateX(-50%) translateY(-4px);}
-.floatToday{position:fixed; right:14px; bottom:14px; z-index:50;}
-#confetti{ position:fixed; inset:0; pointer-events:none; z-index:9998; }
+.panelInner{
+  background: linear-gradient(180deg, rgba(12,21,43,.70), rgba(15,26,51,.55));
+  padding:14px;
+}
+
+.monthbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.monthTitle{ font-weight:800; font-size:16px; letter-spacing:.25px; }
+
+.weekdays, .days{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
+.weekdays div{ text-align:center; font-size:12px; color: rgba(168,179,207,.92); padding:4px 0; letter-spacing:.2px; }
+
+.day{
+  background: rgba(16,27,56,.72);
+  border-radius: 14px;
+  padding:10px;
+  min-height:66px;
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,.08);
+  position:relative;
+  transition: transform .12s ease, border-color .12s ease;
+}
+.day:hover{ border-color: rgba(255,255,255,.18); transform: translateY(-1px); }
+.day:active{ transform: translateY(0px); }
+
+.day.today{ border:2px solid rgba(124,92,255,.70); }
+.day.bday{
+  border:2px solid rgba(34,197,94,.70);
+  background: linear-gradient(180deg, rgba(34,197,94,.10), rgba(16,27,56,.72));
+}
+.day.bday:before{
+  content:"";
+  position:absolute;
+  inset:-22px -26px auto auto;
+  width:64px;height:64px;
+  background: radial-gradient(circle at 30% 30%, rgba(34,197,94,.55), rgba(34,197,94,0) 62%);
+  transform: rotate(18deg);
+  pointer-events:none;
+}
+.day.muted{ opacity:.35; cursor:default; }
+.day .n{ font-size:14px; font-weight:800; display:flex; align-items:center; gap:6px; }
+.day .n .miniBadge{
+  font-size:11px;
+  padding:3px 7px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  color: rgba(232,240,255,.92);
+}
+.day .p{
+  margin-top:8px;
+  font-size:11px;
+  color: rgba(168,179,207,.92);
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.sideInner{
+  padding:14px;
+  background: linear-gradient(180deg, rgba(12,21,43,.65), rgba(15,26,51,.55));
+}
+.cardInner{
+  background: rgba(16,27,56,.60);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius: var(--radius2);
+  padding:14px;
+}
+#selectedTitle{ font-size:18px; font-weight:900; letter-spacing:.2px; }
+#selectedHint{ margin-top:8px; }
+.list{ list-style:none; padding:0; margin:12px 0 0; }
+
+.item{
+  background: linear-gradient(180deg, rgba(18,31,66,.90), rgba(18,31,66,.70));
+  border-radius: 14px;
+  padding:12px 12px;
+  margin-bottom:10px;
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow: 0 8px 18px rgba(0,0,0,.22);
+}
+.itemTop{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:flex-start;
+}
+.itemTop strong{ font-size:15px; }
+.itemTop .dateTag{
+  font-size:12px;
+  color: rgba(168,179,207,.95);
+  border:1px solid rgba(255,255,255,.12);
+  padding:6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.04);
+}
+
+.msg{
+  font-size:12.5px;
+  margin-top:10px;
+  color: rgba(193,255,219,.92);
+  line-height:1.35;
+  border: 1px solid rgba(34,197,94,.20);
+  background: linear-gradient(90deg, rgba(34,197,94,.10), rgba(124,92,255,.10));
+  border-radius: 12px;
+  padding:10px 12px;
+}
+
+.floatToday{
+  position:fixed;
+  right:14px;
+  bottom:14px;
+  z-index:50;
+}
+.floatToday button{
+  border:1px solid rgba(124,92,255,.35);
+  background: linear-gradient(180deg, rgba(124,92,255,.22), rgba(124,92,255,.12));
+}
 
 @media (max-width: 600px){
-  .container{ padding:18px 12px 110px; }
+  .container{ padding:18px 12px 92px; }
   h1{ font-size:18px; }
   .controls{ justify-content:flex-start; }
-  .stats{ grid-template-columns:1fr; }
   .day{ min-height:54px; padding:9px; border-radius:12px; }
   .day .p{ display:none; }
   #selectedTitle{ font-size:17px; }
-  .search{ flex: 1 1 100%; }
 }
+
 @media (prefers-reduced-motion: reduce){
-  .day, .btn, .toast{ transition:none !important; }
+  .day, button{ transition:none !important; }
 }
 </style>
 </head>
+
 <body>
-<div class="bgfx"></div>
-<canvas id="confetti"></canvas>
-
 <div class="container">
-  <section class="hero">
-    <div class="heroInner">
-      <div class="topRow">
-        <div style="min-width:260px">
-          <h1>🎉 Aniversário — Líderes e Supervisores de Mesa <span class="badge">Surpresa</span></h1>
-          <div class="sub">Sem mexer no que já funciona — só deixei mais “uau”: <b>busca</b>, <b>próximos 7 dias</b>, <b>copiar mensagem</b>, <b>mandar no WhatsApp</b> e <b>confete</b> quando abrir aniversários ✨</div>
-        </div>
-
-        <div class="controls">
-          <button class="btn" type="button" id="prevBtn">◀ Anterior</button>
-          <button class="btn" type="button" id="nextBtn">Próximo ▶</button>
-          <span class="pill" id="countPill"><span class="dot"></span> —</span>
-        </div>
-      </div>
-
-      <div class="stats">
-        <div class="stat">
-          <div>
-            <div class="k">📅 Mês atual</div>
-            <div class="v" id="monthStat">—</div>
-            <div class="hint">Use os botões para navegar pelos meses.</div>
-          </div>
-          <div class="pill"><span class="dot g"></span> Aniversário <span style="opacity:.6">·</span> <span class="dot p"></span> Hoje</div>
-        </div>
-
-        <div class="stat">
-          <div>
-            <div class="k">⏭️ Próximos 7 dias</div>
-            <div class="v" id="next7Title">—</div>
-            <div class="hint" id="next7Hint">—</div>
-          </div>
-          <button class="btn primary" type="button" id="goNextBtn">Ver</button>
-        </div>
-
-        <div class="stat">
-          <div style="width:100%">
-            <div class="k">🔎 Buscar aniversariante</div>
-            <div class="searchWrap" style="margin-top:8px">
-              <div class="search" title="Digite um nome para localizar">
-                <span aria-hidden="true">🔎</span>
-                <input id="searchInput" type="text" placeholder="Ex: Larissa, Pastor, Felipe..." autocomplete="off">
-              </div>
-              <button class="btn" type="button" id="clearSearch">Limpar</button>
-            </div>
-            <div class="hint" style="margin-top:8px">Ao buscar, vou direto no próximo aniversário dessa pessoa.</div>
-          </div>
-        </div>
-      </div>
+  <header>
+    <div class="hgroup">
+      <h1>🎉 Aniversário — Líderes e Supervisores de Mesa <span class="badge">Calendário</span></h1>
+      <div class="subtitle">Clique em um dia para ver os aniversariantes. Dias com aniversário ficam em verde.</div>
     </div>
-  </section>
+
+    <div class="controls">
+      <button type="button" onclick="prevMonth()">◀ Anterior</button>
+      <button type="button" onclick="nextMonth()">Próximo ▶</button>
+      <span class="pill" id="countPill"><span class="dot"></span> —</span>
+    </div>
+  </header>
 
   <div class="layout">
     <div class="panel">
       <div class="panelInner">
         <div class="monthbar">
           <div class="monthTitle" id="monthTitle">—</div>
-          <span class="pill"><span class="dot g"></span> Aniversário <span style="opacity:.55">·</span> <span class="dot.p"></span></span>
+          <span class="pill" id="legend"><span class="dot g"></span> Aniversário <span style="opacity:.55">·</span> <span class="dot p"></span> Hoje</span>
         </div>
 
         <div class="weekdays">
@@ -223,7 +302,7 @@ h1{margin:0; font-size:22px; letter-spacing:.2px; display:flex; align-items:cent
       <div class="sideInner">
         <div class="cardInner">
           <div id="selectedTitle">Selecione um dia</div>
-          <div id="selectedHint">Ao clicar em um dia do calendário, os aniversários aparecem aqui.</div>
+          <div class="subtitle" id="selectedHint">Ao clicar em um dia do calendário, os aniversários aparecem aqui.</div>
           <ul class="list" id="list"></ul>
         </div>
       </div>
@@ -232,13 +311,11 @@ h1{margin:0; font-size:22px; letter-spacing:.2px; display:flex; align-items:cent
 </div>
 
 <div class="floatToday">
-  <button class="btn primary" type="button" id="todayBtn">📍 Ir para hoje</button>
+  <button type="button" onclick="goToday()">📍 Ir para hoje</button>
 </div>
 
-<div class="toast" id="toast">Copiado ✅</div>
-
 <script>
-const birthdays = {
+  const birthdays = {
   "01-08": [
     "Larissa Campos",
     "Vinicius Santana"
@@ -497,7 +574,7 @@ const birthdays = {
     "Mariana Thais"
   ]
 };
-const messages  = {
+  const messages  = {
   "Larissa Campos": "🎉📖 Larissa, feliz aniversário! Que o Senhor te abençoe e te guarde; e te conceda paz. (Números 6:24-26)",
   "Vinicius Santana": "🙏📖 Vinicius, feliz aniversário! Entregue seus caminhos ao Senhor; Ele cuidará de você. (Salmo 37:5)",
   "Andressa Almeida": "✨📖 Andressa, feliz aniversário! Confie no Senhor de todo o coração; Ele endireitará seus passos. (Provérbios 3:5-6)",
@@ -591,349 +668,116 @@ const messages  = {
   "Natanael Abrantes": "✨📖 Natanael, feliz aniversário! Que o Senhor te abençoe e te guarde; e te conceda paz. (Números 6:24-26)",
   "Mariana Thais": "🎂📖 Mariana, feliz aniversário! Entregue seus caminhos ao Senhor; Ele cuidará de você. (Salmo 37:5)"
 };
-const defaultMsg = "🎉📖 Feliz aniversário! Que Deus abençoe sua vida com saúde, paz e alegria. (Números 6:24-26)";
-const months=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  const defaultMsg = "🎉📖 Feliz aniversário! Que Deus abençoe sua vida com saúde, paz e alegria. (Números 6:24-26)";
 
-const daysEl = document.getElementById("days");
-const monthTitleEl = document.getElementById("monthTitle");
-const monthStatEl = document.getElementById("monthStat");
-const countPillEl = document.getElementById("countPill");
-const selectedTitleEl = document.getElementById("selectedTitle");
-const selectedHintEl = document.getElementById("selectedHint");
-const listEl = document.getElementById("list");
-const toastEl = document.getElementById("toast");
+  const months=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const todayBtn = document.getElementById("todayBtn");
-const searchInput = document.getElementById("searchInput");
-const clearSearch = document.getElementById("clearSearch");
-const goNextBtn = document.getElementById("goNextBtn");
+  var now = new Date();
+  var month = now.getMonth();
+  var year  = now.getFullYear();
 
-let now = new Date();
-let viewMonth = now.getMonth();
-let viewYear = now.getFullYear();
-let selectedCell = null;
+  function pad2(n){ return String(n).padStart(2,"0"); }
 
-function pad2(n){ return String(n).padStart(2,"0"); }
-
-function countInMonth(m){
-  const mm = pad2(m+1);
-  let daysCount = 0, peopleCount = 0;
-  for (const k in birthdays){
-    if (Object.prototype.hasOwnProperty.call(birthdays,k) && k.indexOf(mm + "-") === 0){
-      daysCount++;
-      peopleCount += birthdays[k].length;
-    }
-  }
-  return {daysCount, peopleCount};
-}
-
-function showToast(text){
-  toastEl.textContent = text;
-  toastEl.classList.add("show");
-  clearTimeout(showToast._t);
-  showToast._t = setTimeout(()=>toastEl.classList.remove("show"), 1400);
-}
-
-/* confetti */
-const c = document.getElementById("confetti");
-const ctx = c.getContext("2d");
-let conf = [];
-function resizeCanvas(){ c.width = window.innerWidth; c.height = window.innerHeight; }
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
-
-function launchConfetti(){
-  const colors = ["rgba(34,197,94,.95)","rgba(124,92,255,.95)","rgba(255,255,255,.92)","rgba(251,113,133,.95)"];
-  const cx = Math.random()*c.width*0.6 + c.width*0.2;
-  const cy = 30;
-  for (let i=0;i<90;i++){
-    conf.push({
-      x: cx, y: cy,
-      vx: (Math.random()-0.5)*7,
-      vy: Math.random()*-6 - 3,
-      g: 0.18 + Math.random()*0.08,
-      s: 2 + Math.random()*3,
-      r: Math.random()*Math.PI,
-      vr: (Math.random()-0.5)*0.25,
-      life: 80 + Math.random()*40,
-      col: colors[Math.floor(Math.random()*colors.length)]
-    });
-  }
-}
-
-function tickConfetti(){
-  ctx.clearRect(0,0,c.width,c.height);
-  for (let i=conf.length-1;i>=0;i--){
-    const p = conf[i];
-    p.life -= 1;
-    p.vy += p.g;
-    p.x += p.vx;
-    p.y += p.vy;
-    p.r += p.vr;
-    ctx.save();
-    ctx.translate(p.x,p.y);
-    ctx.rotate(p.r);
-    ctx.fillStyle = p.col;
-    ctx.fillRect(-p.s/2,-p.s/2,p.s*1.3,p.s);
-    ctx.restore();
-    if (p.life<=0 || p.y>c.height+40) conf.splice(i,1);
-  }
-  requestAnimationFrame(tickConfetti);
-}
-tickConfetti();
-
-function clearDetails(){
-  selectedTitleEl.textContent = "Selecione um dia";
-  selectedHintEl.style.display = "block";
-  listEl.innerHTML = "";
-}
-
-function setSelectedCell(cell){
-  if (selectedCell) selectedCell.classList.remove("selected");
-  selectedCell = cell;
-  if (selectedCell) selectedCell.classList.add("selected");
-}
-
-function showDay(key, day){
-  listEl.innerHTML = "";
-  selectedHintEl.style.display = "none";
-  selectedTitleEl.textContent = day + " de " + months[viewMonth];
-
-  const people = birthdays[key];
-  if (!people){
-    const li = document.createElement("li");
-    li.className = "item";
-    li.textContent = "Sem aniversariantes neste dia.";
-    listEl.appendChild(li);
-    return;
-  }
-
-  launchConfetti();
-
-  const parts = key.split("-");
-  const mm = parts[0], dd = parts[1];
-
-  people.forEach((name)=>{
-    const msg = messages[name] || defaultMsg;
-    const li = document.createElement("li");
-    li.className = "item";
-
-    const msgEnc = encodeURIComponent(msg);
-    const waText = encodeURIComponent("*"+name+"* - "+dd+"/"+mm+"\n"+msg);
-
-    li.innerHTML =
-      "<div class='itemTop'><strong>"+name+"</strong><span class='dateTag'>"+dd+"/"+mm+"</span></div>" +
-      "<div class='msg'>"+msg+"</div>" +
-      "<div class='actions'>" +
-        "<button class='smallBtn' type='button' data-copy='"+msgEnc+"'>📋 Copiar mensagem</button>" +
-        "<button class='smallBtn' type='button' data-wa='"+waText+"'>🟢 WhatsApp</button>" +
-      "</div>";
-
-    listEl.appendChild(li);
-  });
-}
-
-function render(){
-  const mName = months[viewMonth];
-  monthTitleEl.textContent = "✨ " + mName + " " + viewYear;
-  monthStatEl.textContent  = mName + " " + viewYear;
-
-  const c = countInMonth(viewMonth);
-  countPillEl.textContent = "🎂 " + c.peopleCount + " pessoa(s) · " + c.daysCount + " dia(s)";
-
-  daysEl.innerHTML = "";
-  clearDetails();
-  setSelectedCell(null);
-
-  const first = new Date(viewYear, viewMonth, 1).getDay();
-  const total = new Date(viewYear, viewMonth+1, 0).getDate();
-
-  for (let i=0; i<first; i++){
-    const div = document.createElement("div");
-    div.className = "day muted";
-    daysEl.appendChild(div);
-  }
-
-  for (let d=1; d<=total; d++){
-    const key = pad2(viewMonth+1) + "-" + pad2(d);
-    const has = !!birthdays[key];
-
-    const div = document.createElement("div");
-    let cls = "day";
-    if (has) cls += " bday";
-    if (d === now.getDate() && viewMonth === now.getMonth() && viewYear === now.getFullYear()) cls += " today";
-    div.className = cls;
-
-    let preview = "";
-    if (has){
-      const arr = birthdays[key];
-      preview = arr.slice(0,2).join(", ");
-      if (arr.length>2) preview += "…";
-    }
-
-    const badge = has ? " <span class='miniBadge'>🎉</span>" : "";
-    div.innerHTML = "<div class='n'>" + d + badge + "</div>" + (has ? "<div class='p'>" + preview + "</div>" : "");
-
-    div.addEventListener("click", ()=>{
-      setSelectedCell(div);
-      showDay(key, d);
-    });
-
-    daysEl.appendChild(div);
-  }
-
-  updateNext7();
-}
-
-/* next 7 days */
-function upcomingBirthdays(fromDate, daysAhead){
-  const out = [];
-  for (let i=0;i<=daysAhead;i++){
-    const d = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate()+i);
-    const key = pad2(d.getMonth()+1)+"-"+pad2(d.getDate());
-    if (birthdays[key]) out.push({date:d, key:key, names:birthdays[key]});
-  }
-  return out;
-}
-function updateNext7(){
-  const list = upcomingBirthdays(new Date(), 7);
-  const t = document.getElementById("next7Title");
-  const h = document.getElementById("next7Hint");
-  if (!list.length){
-    t.textContent = "Sem aniversários";
-    h.textContent = "Nenhum aniversário nos próximos 7 dias.";
-    goNextBtn.disabled = true;
-    goNextBtn.style.opacity = .5;
-    return;
-  }
-  const first = list[0];
-  const dd = pad2(first.date.getDate());
-  const mm = pad2(first.date.getMonth()+1);
-  t.textContent = first.names.join(", ");
-  h.textContent = "Mais próximo: " + dd + "/" + mm;
-  goNextBtn.disabled = false;
-  goNextBtn.style.opacity = 1;
-  goNextBtn.onclick = ()=>{
-    viewYear = new Date().getFullYear();
-    viewMonth = first.date.getMonth();
-    render();
-    const cells = Array.from(document.querySelectorAll(".day")).filter(el=>!el.classList.contains("muted"));
-    const target = cells.find(el=>{
-      const n = el.querySelector(".n");
-      if (!n) return false;
-      const num = parseInt(n.textContent,10);
-      return num === first.date.getDate();
-    });
-    if (target){
-      setSelectedCell(target);
-      showDay(first.key, first.date.getDate());
-      target.scrollIntoView({behavior:"smooth", block:"center"});
-    }
-  };
-}
-
-/* search */
-function findNextOccurrenceByName(query){
-  query = query.trim().toLowerCase();
-  if (!query) return null;
-
-  const matches = [];
-  for (const key in birthdays){
-    if (!Object.prototype.hasOwnProperty.call(birthdays,key)) continue;
-    for (const name of birthdays[key]){
-      if (name.toLowerCase().indexOf(query) !== -1){
-        matches.push({name:name, key:key});
+  function countInMonth(m){
+    var mm = pad2(m+1);
+    var daysCount = 0;
+    var peopleCount = 0;
+    for (var k in birthdays){
+      if (birthdays.hasOwnProperty(k) && k.indexOf(mm + "-") === 0){
+        daysCount++;
+        peopleCount += birthdays[k].length;
       }
     }
+    return {daysCount: daysCount, peopleCount: peopleCount};
   }
-  if (!matches.length) return null;
 
-  const today = new Date();
-  let best = null;
+  function render(){
+    document.getElementById("monthTitle").innerText = months[month] + " " + year;
 
-  for (const m of matches){
-    const parts = m.key.split("-");
-    const mm = parseInt(parts[0],10), dd = parseInt(parts[1],10);
-    const dThis = new Date(today.getFullYear(), mm-1, dd);
-    const dNext = (dThis < today) ? new Date(today.getFullYear()+1, mm-1, dd) : dThis;
-    const dist = dNext - today;
-    if (!best || dist < best.dist) best = {name:m.name, key:m.key, date:dNext, dist:dist};
+    var c = countInMonth(month);
+    document.getElementById("countPill").innerText = "🎂 " + c.peopleCount + " pessoa(s) · " + c.daysCount + " dia(s)";
+
+    var grid = document.getElementById("days");
+    grid.innerHTML = "";
+
+    document.getElementById("selectedTitle").innerText = "Selecione um dia";
+    document.getElementById("selectedHint").style.display = "block";
+    document.getElementById("list").innerHTML = "";
+
+    var first = new Date(year, month, 1).getDay();
+    var total = new Date(year, month + 1, 0).getDate();
+
+    for (var i=0; i<first; i++){
+      var empty = document.createElement("div");
+      empty.className = "day muted";
+      grid.appendChild(empty);
+    }
+
+    for (var d=1; d<=total; d++){
+      var key = pad2(month+1) + "-" + pad2(d);
+      var has = birthdays[key] ? true : false;
+
+      var div = document.createElement("div");
+      var cls = "day";
+      if (has) cls += " bday";
+      if (d === now.getDate() && month === now.getMonth() && year === now.getFullYear()) cls += " today";
+      div.className = cls;
+
+      var preview = "";
+      if (has){
+        var arr = birthdays[key];
+        preview = arr.slice(0,2).join(", ");
+        if (arr.length > 2) preview += "…";
+      }
+
+      var badge = has ? " <span class='miniBadge'>🎉</span>" : "";
+      div.innerHTML = "<div class='n'>" + d + badge + "</div>" + (has ? "<div class='p'>" + preview + "</div>" : "");
+
+      (function(keyCopy, dayCopy){
+        div.onclick = function(){ showDay(keyCopy, dayCopy); };
+      })(key, d);
+
+      grid.appendChild(div);
+    }
   }
-  return best;
-}
 
-let searchTimer = null;
-searchInput.addEventListener("input", ()=>{
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(()=>{
-    const q = searchInput.value;
-    if (!q.trim()) return;
-    const best = findNextOccurrenceByName(q);
-    if (!best){
-      showToast("Não encontrei 😕");
+  function showDay(key, day){
+    var list = document.getElementById("list");
+    list.innerHTML = "";
+    document.getElementById("selectedHint").style.display = "none";
+    document.getElementById("selectedTitle").innerText = day + " de " + months[month];
+
+    if (!birthdays[key]){
+      var li = document.createElement("li");
+      li.className = "item";
+      li.innerHTML = "Sem aniversariantes neste dia.";
+      list.appendChild(li);
       return;
     }
-    viewYear = new Date().getFullYear();
-    viewMonth = best.date.getMonth();
-    render();
 
-    const cells = Array.from(document.querySelectorAll(".day")).filter(el=>!el.classList.contains("muted"));
-    const target = cells.find(el=>{
-      const n = el.querySelector(".n");
-      if (!n) return false;
-      const num = parseInt(n.textContent,10);
-      return num === best.date.getDate();
-    });
-    if (target){
-      setSelectedCell(target);
-      showDay(best.key, best.date.getDate());
-      target.scrollIntoView({behavior:"smooth", block:"center"});
-      showToast("Achei: " + best.name);
-    }
-  }, 350);
-});
+    var parts = key.split("-");
+    var mm = parts[0];
+    var dd = parts[1];
 
-clearSearch.addEventListener("click", ()=>{
-  searchInput.value = "";
-  searchInput.focus();
-  showToast("Busca limpa");
-});
+    var people = birthdays[key];
+    for (var i=0; i<people.length; i++){
+      var name = people[i];
+      var msg = messages[name] ? messages[name] : defaultMsg;
 
-/* copy + whatsapp */
-document.addEventListener("click", async (e)=>{
-  const btn = e.target.closest("button");
-  if (!btn) return;
-
-  if (btn.dataset.copy){
-    const msg = decodeURIComponent(btn.dataset.copy);
-    try{
-      await navigator.clipboard.writeText(msg);
-      showToast("Mensagem copiada ✅");
-    }catch(err){
-      const ta = document.createElement("textarea");
-      ta.value = msg;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-      showToast("Copiado ✅");
+      var li2 = document.createElement("li");
+      li2.className = "item";
+      li2.innerHTML =
+        "<div class='itemTop'><strong>" + name + "</strong><span class='dateTag'>" + dd + "/" + mm + "</span></div>" +
+        "<div class='msg'>" + msg + "</div>";
+      list.appendChild(li2);
     }
   }
 
-  if (btn.dataset.wa){
-    const text = decodeURIComponent(btn.dataset.wa);
-    const url = "https://wa.me/?text=" + encodeURIComponent(text);
-    window.open(url, "_blank");
-  }
-});
+  function prevMonth(){ month--; if (month < 0){ month = 11; year--; } render(); }
+  function nextMonth(){ month++; if (month > 11){ month = 0; year++; } render(); }
+  function goToday(){ now = new Date(); month = now.getMonth(); year = now.getFullYear(); render(); }
 
-prevBtn.addEventListener("click", ()=>{ viewMonth--; if (viewMonth<0){ viewMonth=11; viewYear--; } render(); });
-nextBtn.addEventListener("click", ()=>{ viewMonth++; if (viewMonth>11){ viewMonth=0; viewYear++; } render(); });
-todayBtn.addEventListener("click", ()=>{ now = new Date(); viewMonth = now.getMonth(); viewYear = now.getFullYear(); render(); showToast("Hoje"); });
-
-render();
+  render();
 </script>
 </body>
 </html>
