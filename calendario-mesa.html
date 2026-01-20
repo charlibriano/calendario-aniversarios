@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendário de Aniversários - Líderes e Supervisores de Mesa</title>
+
+<style>
+:root{
+  --bg:#0b1220;
+  --panel:#0f162d;
+  --card:#151c36;
+  --chip:#1b2344;
+  --text:#e8eefc;
+  --muted:#a8b3cf;
+  --accent:#7c5cff;
+  --green:#22c55e;
+  --line:#2a335f;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color:var(--text);
+}
+.container{
+  max-width:1100px;
+  margin:0 auto;
+  padding:16px 14px 90px;
+}
+
+header{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+h1{ margin:0; font-size:20px; }
+.subtitle{ font-size:13px; color:var(--muted); line-height:1.35; margin-top:6px; }
+
+.controls{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+button{
+  background:var(--chip);
+  border:1px solid var(--line);
+  color:#fff;
+  padding:9px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.pill{
+  display:inline-block;
+  font-size:12px;
+  color:var(--muted);
+  border:1px solid var(--line);
+  padding:7px 10px;
+  border-radius:999px;
+  background: rgba(255,255,255,.04);
+}
+
+.layout{
+  display:grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap:14px;
+}
+@media (max-width:900px){
+  .layout{ grid-template-columns:1fr; }
+}
+
+.panel{
+  background:var(--panel);
+  border-radius:14px;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.monthbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.monthTitle{ font-weight:bold; font-size:15px; }
+
+.weekdays, .days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+.weekdays div{
+  text-align:center;
+  font-size:12px;
+  color:#aab2ff;
+  padding:4px 0;
+}
+
+.day{
+  background:var(--card);
+  border-radius:10px;
+  padding:8px;
+  min-height:60px;
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,.06);
+}
+.day.today{ border:2px solid var(--accent); }
+.day.bday{ border:2px solid var(--green); }
+.day.muted{ opacity:.35; cursor:default; }
+.day .n{ font-size:13px; font-weight:bold; }
+.day .p{
+  margin-top:6px;
+  font-size:11px;
+  color:var(--muted);
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.sideCard{
+  background:var(--panel);
+  border-radius:14px;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.06);
+}
+.cardInner{
+  background:var(--card);
+  border-radius:12px;
+  padding:12px;
+}
+.list{ list-style:none; padding:0; margin:10px 0 0; }
+.item{
+  background:var(--chip);
+  border-radius:10px;
+  padding:10px;
+  margin-bottom:8px;
+  border:1px solid rgba(255,255,255,.06);
+}
+.itemTop{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.msg{
+  font-size:12px;
+  margin-top:7px;
+  color:#aef5c8;
+  line-height:1.3;
+}
+
+.floatToday{
+  position:fixed;
+  right:14px;
+  bottom:14px;
+}
+
+@media (max-width:600px){
+  h1{ font-size:18px; }
+  .day{ min-height:50px; }
+  .day .p{ display:none; }
+  button{ padding:10px 12px; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>🎉 Aniversário — Líderes e Supervisores de Mesa</h1>
+      <div class="subtitle">Clique em um dia para ver os aniversariantes. Dias com aniversário ficam em verde.</div>
+    </div>
+    <div class="controls">
+      <button type="button" onclick="prevMonth()">◀ Anterior</button>
+      <button type="button" onclick="nextMonth()">Próximo ▶</button>
+      <span class="pill" id="countPill">—</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div class="panel">
+      <div class="monthbar">
+        <div class="monthTitle" id="monthTitle">—</div>
+        <span class="pill" id="legend">🟩 Aniversário · 🟣 Hoje</span>
+      </div>
+
+      <div class="weekdays">
+        <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+      </div>
+      <div class="days" id="days"></div>
+    </div>
+
+    <div class="sideCard">
+      <div class="cardInner">
+        <strong id="selectedTitle">Selecione um dia</strong>
+        <div class="subtitle" id="selectedHint" style="margin-top:6px">Ao clicar em um dia do calendário, os aniversários aparecem aqui.</div>
+        <ul class="list" id="list"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="floatToday">
+  <button type="button" onclick="goToday()">📍 Ir para hoje</button>
+</div>
+
+<script>
+  const birthdays = {
+  "01-08": [
+    "Larissa Campos",
+    "Vinicius Santana"
+  ],
+  "01-11": [
+    "Andressa Almeida",
+    "Thiago Teixeira"
+  ],
+  "01-16": [
+    "Larissa Emanuelle"
+  ],
+  "01-18": [
+    "Aline Vasconcelos"
+  ],
+  "01-19": [
+    "Nilton Baldini"
+  ],
+  "01-29": [
+    "Samuel Silva"
+  ],
+  "01-30": [
+    "Ana Flávia"
+  ],
+  "02-01": [
+    "Bárbara"
+  ],
+  "02-05": [
+    "Márcia Hilário"
+  ],
+  "02-10": [
+    "Lucas Quirino"
+  ],
+  "02-11": [
+    "Ketlyn",
+    "Terra"
+  ],
+  "02-15": [
+    "Felipe Palhares"
+  ],
+  "02-19": [
+    "Bruna Macedo"
+  ],
+  "02-23": [
+    "Edmar Dutra"
+  ],
+  "02-27": [
+    "Davidson Rocha"
+  ],
+  "02-28": [
+    "Pastora Flávia"
+  ],
+  "03-04": [
+    "Mariana Borges"
+  ],
+  "03-14": [
+    "Iana"
+  ],
+  "03-15": [
+    "Bruna Rodrigues",
+    "Carina"
+  ],
+  "03-16": [
+    "Letícia Carolina"
+  ],
+  "03-24": [
+    "Jailton Chaves"
+  ],
+  "03-26": [
+    "Cristiano dos Santos",
+    "Luana Ramos"
+  ],
+  "03-31": [
+    "Jezielen Rocha"
+  ],
+  "04-04": [
+    "Liza",
+    "Giovane"
+  ],
+  "04-06": [
+    "Felipe Soares"
+  ],
+  "04-11": [
+    "Tainara"
+  ],
+  "04-12": [
+    "Queren Santos"
+  ],
+  "04-15": [
+    "Abigair (Bia)"
+  ],
+  "04-24": [
+    "Pastor Célio"
+  ],
+  "04-30": [
+    "David Daniel"
+  ],
+  "05-06": [
+    "Bianca Teixeira"
+  ],
+  "05-09": [
+    "Lara Júlia"
+  ],
+  "05-13": [
+    "Pastor Giovani"
+  ],
+  "05-19": [
+    "Sara Menezes"
+  ],
+  "05-21": [
+    "Katia Felipe"
+  ],
+  "05-22": [
+    "Adriana Silva"
+  ],
+  "05-26": [
+    "Rafael Jesus"
+  ],
+  "06-04": [
+    "Priscila Adrego"
+  ],
+  "06-05": [
+    "Cláudio"
+  ],
+  "06-12": [
+    "Will"
+  ],
+  "06-13": [
+    "Vilma"
+  ],
+  "06-16": [
+    "Pr. Lucas Sete"
+  ],
+  "06-18": [
+    "Pra. Natália Sete"
+  ],
+  "06-24": [
+    "Igor Vasconcelos"
+  ],
+  "06-27": [
+    "Marco Antônio"
+  ],
+  "07-01": [
+    "Jonathan"
+  ],
+  "07-02": [
+    "Pastor Sérgio"
+  ],
+  "07-10": [
+    "Edna"
+  ],
+  "07-11": [
+    "André Guerra"
+  ],
+  "07-13": [
+    "Kézia"
+  ],
+  "07-22": [
+    "Tamara",
+    "Gabriel Santos"
+  ],
+  "07-23": [
+    "Sirlei Lima"
+  ],
+  "07-24": [
+    "Vinícius Vasconcelos"
+  ],
+  "07-31": [
+    "Luan Henrique"
+  ],
+  "08-08": [
+    "Lorraine"
+  ],
+  "08-15": [
+    "Bete",
+    "David Moreira"
+  ],
+  "08-24": [
+    "Ester Gabriela"
+  ],
+  "08-25": [
+    "Pedro Santos"
+  ],
+  "08-30": [
+    "Humberto"
+  ],
+  "09-06": [
+    "Thais Fernandes"
+  ],
+  "09-11": [
+    "Willian Juliano",
+    "Rosana Morais"
+  ],
+  "09-20": [
+    "Bruno Brito"
+  ],
+  "09-30": [
+    "Aquiles"
+  ],
+  "10-01": [
+    "Andrezza"
+  ],
+  "10-03": [
+    "Alysson"
+  ],
+  "10-11": [
+    "Adão Simplicio"
+  ],
+  "10-12": [
+    "Karla Simone"
+  ],
+  "10-15": [
+    "Felipe Barone"
+  ],
+  "10-16": [
+    "Jéssica Palhares"
+  ],
+  "10-21": [
+    "Islane"
+  ],
+  "10-28": [
+    "Dany Pereira"
+  ],
+  "11-05": [
+    "Samuel Bernabé"
+  ],
+  "11-08": [
+    "Leandro Almeida"
+  ],
+  "11-09": [
+    "Mônica Baldini"
+  ],
+  "11-17": [
+    "Betânia",
+    "Hugo"
+  ],
+  "11-19": [
+    "Bruno Henrique"
+  ],
+  "11-24": [
+    "Matheus Martins"
+  ],
+  "12-03": [
+    "Carlos Guilherme"
+  ],
+  "12-05": [
+    "Guilherme"
+  ],
+  "12-17": [
+    "Felipe Soares",
+    "Leandro Mendes"
+  ],
+  "12-25": [
+    "Natanael Abrantes"
+  ],
+  "12-26": [
+    "Mariana Thais"
+  ]
+};
+  const messages  = {
+  "Larissa Campos": "🎉📖 Larissa, feliz aniversário! Que o Senhor te abençoe e te guarde; e te conceda paz. (Números 6:24-26)",
+  "Vinicius Santana": "🙏📖 Vinicius, feliz aniversário! Entregue seus caminhos ao Senhor; Ele cuidará de você. (Salmo 37:5)",
+  "Andressa Almeida": "✨📖 Andressa, feliz aniversário! Confie no Senhor de todo o coração; Ele endireitará seus passos. (Provérbios 3:5-6)",
+  "Thiago Teixeira": "🎂📖 Thiago, feliz aniversário! Deus tem planos de paz e um futuro cheio de esperança para você. (Jeremias 29:11)",
+  "Larissa Emanuelle": "🎉📖 Larissa, feliz aniversário! Não temas: Deus te fortalece, ajuda e sustenta. (Isaías 41:10)",
+  "Aline Vasconcelos": "🙏📖 Aline, feliz aniversário! Que a paz de Deus guarde seu coração e seus pensamentos. (Filipenses 4:6-7)",
+  "Nilton Baldini": "✨📖 Nilton, feliz aniversário! O Senhor é seu Pastor; nada te faltará. (Salmo 23:1)",
+  "Samuel Silva": "🎂📖 Samuel, feliz aniversário! Que Deus te encha de alegria e paz, transbordando em esperança. (Romanos 15:13)",
+  "Ana Flávia": "🎉📖 Ana, feliz aniversário! Que o Senhor te guarde em todo tempo, na saída e na chegada. (Salmo 121:7-8)",
+  "Bárbara": "🙏📖 Bárbara, feliz aniversário! Que Deus faça além do que você pede ou imagina. (Efésios 3:20)",
+  "Márcia Hilário": "✨📖 Márcia, feliz aniversário! Que Deus te conceda sabedoria para cada decisão. (Tiago 1:5)",
+  "Lucas Quirino": "🎂📖 Lucas, feliz aniversário! Que suas forças sejam renovadas e você siga com ânimo. (Isaías 40:31)",
+  "Ketlyn": "🎉📖 Ketlyn, feliz aniversário! Que a paz de Jesus seja sua porção em todo momento. (João 14:27)",
+  "Terra": "🙏📖 Terra, feliz aniversário! Busque o Reino, e Deus suprirá o necessário. (Mateus 6:33)",
+  "Felipe Palhares": "✨📖 Felipe, feliz aniversário! Deus vai à sua frente; tenha coragem. (Deuteronômio 31:8)",
+  "Bruna Macedo": "🎂📖 Bruna, feliz aniversário! Que a Palavra seja luz para o seu caminho. (Salmo 119:105)",
+  "Edmar Dutra": "🎉📖 Edmar, feliz aniversário! Que Deus complete a boa obra que começou em você. (Filipenses 1:6)",
+  "Davidson Rocha": "🙏📖 Davidson, feliz aniversário! Que Deus te instrua e te mostre o caminho a seguir. (Salmo 32:8)",
+  "Pastora Flávia": "✨📖 Pastora, feliz aniversário! Que você encontre descanso em Jesus. (Mateus 11:28)",
+  "Mariana Borges": "🎂📖 Mariana, feliz aniversário! Seja forte e corajoso; Deus está com você. (Josué 1:9)",
+  "Iana": "🎉📖 Iana, feliz aniversário! Que você descanse na proteção do Altíssimo. (Salmo 91:1)",
+  "Bruna Rodrigues": "🙏📖 Bruna, feliz aniversário! Deus coopera em tudo para o seu bem. (Romanos 8:28)",
+  "Carina": "✨📖 Carina, feliz aniversário! Não desanime: no tempo certo você colherá. (Gálatas 6:9)",
+  "Letícia Carolina": "🎂📖 Letícia, feliz aniversário! Que você viva com poder, amor e equilíbrio. (2 Timóteo 1:7)",
+  "Jailton Chaves": "🎉📖 Jailton, feliz aniversário! Que Deus encha seu caminho de alegria na Sua presença. (Salmo 16:11)",
+  "Cristiano dos Santos": "🙏📖 Cristiano, feliz aniversário! Que Deus te guie continuamente e sacie sua alma. (Isaías 58:11)",
+  "Luana Ramos": "✨📖 Luana, feliz aniversário! Que tudo em sua vida seja feito com amor. (1 Coríntios 16:14)",
+  "Jezielen Rocha": "🎂📖 Jezielen, feliz aniversário! Que a paz de Cristo governe seu coração. (Colossenses 3:15)",
+  "Liza": "🎉📖 Liza, feliz aniversário! Que a bondade do Senhor confirme a obra das suas mãos. (Salmo 90:17)",
+  "Giovane": "🙏📖 Giovane, feliz aniversário! Se Deus é por nós, quem será contra nós?. (Romanos 8:31)",
+  "Felipe Soares": "✨📖 Felipe, feliz aniversário! Que o Senhor te abençoe e te guarde; e te conceda paz. (Números 6:24-26)",
+  "Tainara": "🎂📖 Tainara, feliz aniversário! Entregue seus caminhos ao Senhor; Ele cuidará de você. (Salmo 37:5)",
+  "Queren Santos": "🎉📖 Queren, feliz aniversário! Confie no Senhor de todo o coração; Ele endireitará seus passos. (Provérbios 3:5-6)",
+  "Abigair (Bia)": "🙏📖 Abigair, feliz aniversário! Deus tem planos de paz e um futuro cheio de esperança para você. (Jeremias 29:11)",
+  "Pastor Célio": "✨📖 Pastor, feliz aniversário! Não temas: Deus te fortalece, ajuda e sustenta. (Isaías 41:10)",
+  "David Daniel": "🎂📖 David, feliz aniversário! Que a paz de Deus guarde seu coração e seus pensamentos. (Filipenses 4:6-7)",
+  "Bianca Teixeira": "🎉📖 Bianca, feliz aniversário! O Senhor é seu Pastor; nada te faltará. (Salmo 23:1)",
+  "Lara Júlia": "🙏📖 Lara, feliz aniversário! Que Deus te encha de alegria e paz, transbordando em esperança. (Romanos 15:13)",
+  "Pastor Giovani": "✨📖 Pastor, feliz aniversário! Que o Senhor te guarde em todo tempo, na saída e na chegada. (Salmo 121:7-8)",
+  "Sara Menezes": "🎂📖 Sara, feliz aniversário! Que Deus faça além do que você pede ou imagina. (Efésios 3:20)",
+  "Katia Felipe": "🎉📖 Katia, feliz aniversário! Que Deus te conceda sabedoria para cada decisão. (Tiago 1:5)",
+  "Adriana Silva": "🙏📖 Adriana, feliz aniversário! Que suas forças sejam renovadas e você siga com ânimo. (Isaías 40:31)",
+  "Rafael Jesus": "✨📖 Rafael, feliz aniversário! Que a paz de Jesus seja sua porção em todo momento. (João 14:27)",
+  "Priscila Adrego": "🎂📖 Priscila, feliz aniversário! Busque o Reino, e Deus suprirá o necessário. (Mateus 6:33)",
+  "Cláudio": "🎉📖 Cláudio, feliz aniversário! Deus vai à sua frente; tenha coragem. (Deuteronômio 31:8)",
+  "Will": "🙏📖 Will, feliz aniversário! Que a Palavra seja luz para o seu caminho. (Salmo 119:105)",
+  "Vilma": "✨📖 Vilma, feliz aniversário! Que Deus complete a boa obra que começou em você. (Filipenses 1:6)",
+  "Pr. Lucas Sete": "🎂📖 Pr., feliz aniversário! Que Deus te instrua e te mostre o caminho a seguir. (Salmo 32:8)",
+  "Pra. Natália Sete": "🎉📖 Pra., feliz aniversário! Que você encontre descanso em Jesus. (Mateus 11:28)",
+  "Igor Vasconcelos": "🙏📖 Igor, feliz aniversário! Seja forte e corajoso; Deus está com você. (Josué 1:9)",
+  "Marco Antônio": "✨📖 Marco, feliz aniversário! Que você descanse na proteção do Altíssimo. (Salmo 91:1)",
+  "Jonathan": "🎂📖 Jonathan, feliz aniversário! Deus coopera em tudo para o seu bem. (Romanos 8:28)",
+  "Pastor Sérgio": "🎉📖 Pastor, feliz aniversário! Não desanime: no tempo certo você colherá. (Gálatas 6:9)",
+  "Edna": "🙏📖 Edna, feliz aniversário! Que você viva com poder, amor e equilíbrio. (2 Timóteo 1:7)",
+  "André Guerra": "✨📖 André, feliz aniversário! Que Deus encha seu caminho de alegria na Sua presença. (Salmo 16:11)",
+  "Kézia": "🎂📖 Kézia, feliz aniversário! Que Deus te guie continuamente e sacie sua alma. (Isaías 58:11)",
+  "Tamara": "🎉📖 Tamara, feliz aniversário! Que tudo em sua vida seja feito com amor. (1 Coríntios 16:14)",
+  "Gabriel Santos": "🙏📖 Gabriel, feliz aniversário! Que a paz de Cristo governe seu coração. (Colossenses 3:15)",
+  "Sirlei Lima": "✨📖 Sirlei, feliz aniversário! Que a bondade do Senhor confirme a obra das suas mãos. (Salmo 90:17)",
+  "Vinícius Vasconcelos": "🎂📖 Vinícius, feliz aniversário! Se Deus é por nós, quem será contra nós?. (Romanos 8:31)",
+  "Luan Henrique": "🎉📖 Luan, feliz aniversário! Que o Senhor te abençoe e te guarde; e te conceda paz. (Números 6:24-26)",
+  "Lorraine": "🙏📖 Lorraine, feliz aniversário! Entregue seus caminhos ao Senhor; Ele cuidará de você. (Salmo 37:5)",
+  "Bete": "✨📖 Bete, feliz aniversário! Confie no Senhor de todo o coração; Ele endireitará seus passos. (Provérbios 3:5-6)",
+  "David Moreira": "🎂📖 David, feliz aniversário! Deus tem planos de paz e um futuro cheio de esperança para você. (Jeremias 29:11)",
+  "Ester Gabriela": "🎉📖 Ester, feliz aniversário! Não temas: Deus te fortalece, ajuda e sustenta. (Isaías 41:10)",
+  "Pedro Santos": "🙏📖 Pedro, feliz aniversário! Que a paz de Deus guarde seu coração e seus pensamentos. (Filipenses 4:6-7)",
+  "Humberto": "✨📖 Humberto, feliz aniversário! O Senhor é seu Pastor; nada te faltará. (Salmo 23:1)",
+  "Thais Fernandes": "🎂📖 Thais, feliz aniversário! Que Deus te encha de alegria e paz, transbordando em esperança. (Romanos 15:13)",
+  "Willian Juliano": "🎉📖 Willian, feliz aniversário! Que o Senhor te guarde em todo tempo, na saída e na chegada. (Salmo 121:7-8)",
+  "Rosana Morais": "🙏📖 Rosana, feliz aniversário! Que Deus faça além do que você pede ou imagina. (Efésios 3:20)",
+  "Bruno Brito": "✨📖 Bruno, feliz aniversário! Que Deus te conceda sabedoria para cada decisão. (Tiago 1:5)",
+  "Aquiles": "🎂📖 Aquiles, feliz aniversário! Que suas forças sejam renovadas e você siga com ânimo. (Isaías 40:31)",
+  "Andrezza": "🎉📖 Andrezza, feliz aniversário! Que a paz de Jesus seja sua porção em todo momento. (João 14:27)",
+  "Alysson": "🙏📖 Alysson, feliz aniversário! Busque o Reino, e Deus suprirá o necessário. (Mateus 6:33)",
+  "Adão Simplicio": "✨📖 Adão, feliz aniversário! Deus vai à sua frente; tenha coragem. (Deuteronômio 31:8)",
+  "Karla Simone": "🎂📖 Karla, feliz aniversário! Que a Palavra seja luz para o seu caminho. (Salmo 119:105)",
+  "Felipe Barone": "🎉📖 Felipe, feliz aniversário! Que Deus complete a boa obra que começou em você. (Filipenses 1:6)",
+  "Jéssica Palhares": "🙏📖 Jéssica, feliz aniversário! Que Deus te instrua e te mostre o caminho a seguir. (Salmo 32:8)",
+  "Islane": "✨📖 Islane, feliz aniversário! Que você encontre descanso em Jesus. (Mateus 11:28)",
+  "Dany Pereira": "🎂📖 Dany, feliz aniversário! Seja forte e corajoso; Deus está com você. (Josué 1:9)",
+  "Samuel Bernabé": "🎉📖 Samuel, feliz aniversário! Que você descanse na proteção do Altíssimo. (Salmo 91:1)",
+  "Leandro Almeida": "🙏📖 Leandro, feliz aniversário! Deus coopera em tudo para o seu bem. (Romanos 8:28)",
+  "Mônica Baldini": "✨📖 Mônica, feliz aniversário! Não desanime: no tempo certo você colherá. (Gálatas 6:9)",
+  "Betânia": "🎂📖 Betânia, feliz aniversário! Que você viva com poder, amor e equilíbrio. (2 Timóteo 1:7)",
+  "Hugo": "🎉📖 Hugo, feliz aniversário! Que Deus encha seu caminho de alegria na Sua presença. (Salmo 16:11)",
+  "Bruno Henrique": "🙏📖 Bruno, feliz aniversário! Que Deus te guie continuamente e sacie sua alma. (Isaías 58:11)",
+  "Matheus Martins": "✨📖 Matheus, feliz aniversário! Que tudo em sua vida seja feito com amor. (1 Coríntios 16:14)",
+  "Carlos Guilherme": "🎂📖 Carlos, feliz aniversário! Que a paz de Cristo governe seu coração. (Colossenses 3:15)",
+  "Guilherme": "🎉📖 Guilherme, feliz aniversário! Que a bondade do Senhor confirme a obra das suas mãos. (Salmo 90:17)",
+  "Leandro Mendes": "🙏📖 Leandro, feliz aniversário! Se Deus é por nós, quem será contra nós?. (Romanos 8:31)",
+  "Natanael Abrantes": "✨📖 Natanael, feliz aniversário! Que o Senhor te abençoe e te guarde; e te conceda paz. (Números 6:24-26)",
+  "Mariana Thais": "🎂📖 Mariana, feliz aniversário! Entregue seus caminhos ao Senhor; Ele cuidará de você. (Salmo 37:5)"
+};
+  const defaultMsg = "🎉📖 Feliz aniversário! Que Deus abençoe sua vida com saúde, paz e alegria. (Números 6:24-26)";
+
+  const months=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+
+  var now = new Date();
+  var month = now.getMonth();
+  var year  = now.getFullYear();
+
+  function pad2(n){ return String(n).padStart(2,"0"); }
+
+  function countInMonth(m){ // 0-11
+    var mm = pad2(m+1);
+    var daysCount = 0;
+    var peopleCount = 0;
+    for (var k in birthdays){ 
+      if (birthdays.hasOwnProperty(k) && k.indexOf(mm + "-") === 0){ 
+        daysCount++;
+        peopleCount += birthdays[k].length;
+      }
+    }
+    return {daysCount: daysCount, peopleCount: peopleCount};
+  }
+
+  function render(){ 
+    document.getElementById("monthTitle").innerText = months[month] + " " + year;
+
+    var c = countInMonth(month);
+    document.getElementById("countPill").innerText = "🎂 " + c.peopleCount + " pessoa(s) · " + c.daysCount + " dia(s)";
+
+    var grid = document.getElementById("days");
+    grid.innerHTML = "";
+
+    document.getElementById("selectedTitle").innerText = "Selecione um dia";
+    document.getElementById("selectedHint").style.display = "block";
+    document.getElementById("list").innerHTML = "";
+
+    var first = new Date(year, month, 1).getDay();
+    var total = new Date(year, month + 1, 0).getDate();
+
+    for (var i=0; i<first; i++){ 
+      var empty = document.createElement("div");
+      empty.className = "day muted";
+      grid.appendChild(empty);
+    }
+
+    for (var d=1; d<=total; d++){ 
+      var key = pad2(month+1) + "-" + pad2(d);
+      var has = birthdays[key] ? true : false;
+
+      var div = document.createElement("div");
+      var cls = "day";
+      if (has) cls += " bday";
+      if (d === now.getDate() && month === now.getMonth() && year === now.getFullYear()) cls += " today";
+
+      div.className = cls;
+
+      var preview = "";
+      if (has){ 
+        var arr = birthdays[key];
+        preview = arr.slice(0,2).join(", ");
+        if (arr.length > 2) preview += "…";
+      }
+
+      div.innerHTML = "<div class='n'>" + d + (has ? " 🎉" : "") + "</div>" + (has ? "<div class='p'>" + preview + "</div>" : "");
+
+      (function(keyCopy, dayCopy){ 
+        div.onclick = function(){ showDay(keyCopy, dayCopy); };
+      })(key, d);
+
+      grid.appendChild(div);
+    }
+  }
+
+  function showDay(key, day){ 
+    var list = document.getElementById("list");
+    list.innerHTML = "";
+    document.getElementById("selectedHint").style.display = "none";
+    document.getElementById("selectedTitle").innerText = day + " de " + months[month];
+
+    if (!birthdays[key]){ 
+      var li = document.createElement("li");
+      li.className = "item";
+      li.innerHTML = "Sem aniversariantes neste dia.";
+      list.appendChild(li);
+      return;
+    }
+
+    var parts = key.split("-");
+    var mm = parts[0];
+    var dd = parts[1];
+
+    var people = birthdays[key];
+    for (var i=0; i<people.length; i++){ 
+      var name = people[i];
+      var msg = messages[name] ? messages[name] : defaultMsg;
+
+      var li2 = document.createElement("li");
+      li2.className = "item";
+      li2.innerHTML = "<div class='itemTop'><strong>" + name + "</strong><span style='color:#a8b3cf;font-size:12px'>" + dd + "/" + mm + "</span></div>" +
+                      "<div class='msg'>" + msg + "</div>";
+      list.appendChild(li2);
+    }
+  }
+
+  function prevMonth(){ month--; if (month < 0){ month = 11; year--; } render(); }
+  function nextMonth(){ month++; if (month > 11){ month = 0; year++; } render(); }
+  function goToday(){ now = new Date(); month = now.getMonth(); year = now.getFullYear(); render(); }
+
+  render();
+</script>
+</body>
+</html>
